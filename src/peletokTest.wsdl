@@ -1,0 +1,1610 @@
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://peletop.co.il/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://peletop.co.il/">
+<wsdl:types>
+<s:schema elementFormDefault="qualified" targetNamespace="http://peletop.co.il/">
+<s:element name="Load">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="loadQuery" type="tns:LoadCommand"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="LoadCommand">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceRequest">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="Load" type="tns:Load"/>
+<s:element minOccurs="1" maxOccurs="1" name="LanguageID" type="tns:Language"/>
+<s:element minOccurs="0" maxOccurs="1" name="Branch" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="User" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="AgentId" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="AgentName" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="FreephoneUserNum" type="s:string"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="BaseWebServiceRequest">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseRequest">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="UserType" type="tns:UserType"/>
+<s:element minOccurs="1" maxOccurs="1" name="SellerID" type="s:int"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="BaseRequest">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="ConnectionOrDeviceID" type="s:string"/>
+</s:sequence>
+</s:complexType>
+<s:simpleType name="UserType">
+<s:restriction base="s:string">
+<s:enumeration value="SiteUser"/>
+<s:enumeration value="ServiceUser"/>
+<s:enumeration value="ExcelLoadInterfaceUser"/>
+<s:enumeration value="MachineUser"/>
+</s:restriction>
+</s:simpleType>
+<s:complexType name="BaseWebServiceReportQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceRequest">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="LanguageID" type="tns:Language"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:simpleType name="Language">
+<s:restriction base="s:string">
+<s:enumeration value="Hebrew"/>
+<s:enumeration value="Arabic"/>
+<s:enumeration value="English"/>
+</s:restriction>
+</s:simpleType>
+<s:complexType name="CardsConcentrationReportBaseQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceReportQuery">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderID" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="CardType" type="tns:CardType"/>
+<s:element minOccurs="1" maxOccurs="1" name="DateStart" type="s:dateTime"/>
+<s:element minOccurs="1" maxOccurs="1" name="DateEnd" type="s:dateTime"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:simpleType name="CardType">
+<s:restriction base="s:string">
+<s:enumeration value="All"/>
+<s:enumeration value="Virtual"/>
+<s:enumeration value="Manual"/>
+<s:enumeration value="BillPayment"/>
+<s:enumeration value="BillPaymentVatPercentage"/>
+</s:restriction>
+</s:simpleType>
+<s:complexType name="TransactionManualSucceedReportBaseQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceReportQuery">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderID" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="DateStart" type="s:dateTime"/>
+<s:element minOccurs="1" maxOccurs="1" name="DateEnd" type="s:dateTime"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="PaymentsReportBaseQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceReportQuery">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="DateStart" type="s:dateTime"/>
+<s:element minOccurs="1" maxOccurs="1" name="DateEnd" type="s:dateTime"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="ActionsAndPaymentsReportBaseQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceReportQuery">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="DateStart" type="s:dateTime"/>
+<s:element minOccurs="1" maxOccurs="1" name="DateEnd" type="s:dateTime"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="ActionsReportBaseQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceReportQuery">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderID" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="SegmentationFinancial" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="CardType" type="tns:CardType"/>
+<s:element minOccurs="1" maxOccurs="1" name="DateStart" type="s:dateTime"/>
+<s:element minOccurs="1" maxOccurs="1" name="DateEnd" type="s:dateTime"/>
+<s:element minOccurs="0" maxOccurs="1" name="PhoneNumber" type="s:string"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="Load">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderID" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="ProductID" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="ProductIdenfity" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="CellularNumber" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="Payment" type="s:double"/>
+<s:element minOccurs="1" maxOccurs="1" name="CardType" type="tns:CardType"/>
+</s:sequence>
+</s:complexType>
+<s:element name="LoadResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="LoadResult" type="tns:LoadResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="LoadResponse">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="IsSucceeded" type="s:boolean"/>
+<s:element minOccurs="0" maxOccurs="1" name="Error" type="tns:LoadError"/>
+<s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:Status"/>
+<s:element minOccurs="1" maxOccurs="1" name="TransactionID" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="Load" type="tns:Load"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="LoadError">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:LoadErrorType"/>
+<s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+</s:sequence>
+</s:complexType>
+<s:simpleType name="LoadErrorType">
+<s:restriction base="s:string">
+<s:enumeration value="None"/>
+<s:enumeration value="UsersIdentifyIsInvalid"/>
+<s:enumeration value="TooCloseToPreviousLoad"/>
+<s:enumeration value="AgentBalanceExceeded"/>
+<s:enumeration value="SelerBalanceExceeded"/>
+<s:enumeration value="SellerNotPermittedForSpecificProduct"/>
+<s:enumeration value="ProviderNotActive"/>
+<s:enumeration value="SellerNotPermittedForSpecificProvider"/>
+<s:enumeration value="PaymentNotValidOutOfRange"/>
+<s:enumeration value="PaymentNotValidNotBiggerThenFinalFee"/>
+<s:enumeration value="ProductNotActive"/>
+<s:enumeration value="CellNumberIsInvalid"/>
+<s:enumeration value="IECRequestIsNotOpen"/>
+<s:enumeration value="Other"/>
+<s:enumeration value="ValidDoublePayment"/>
+<s:enumeration value="ValidMunicipalityDoublePayment"/>
+<s:enumeration value="FreephoneUserNotExists"/>
+</s:restriction>
+</s:simpleType>
+<s:complexType name="LoadErrorSelerBalanceExceeded">
+<s:complexContent mixed="false">
+<s:extension base="tns:LoadError">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="Frame" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="TemporaryFrame" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="Balance" type="s:float"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:simpleType name="Status">
+<s:restriction base="s:string">
+<s:enumeration value="none"/>
+<s:enumeration value="begin"/>
+<s:enumeration value="P_Order_Synced_successfully"/>
+<s:enumeration value="P_Order_successfully_Processed"/>
+<s:enumeration value="P_Invalid_MSISDN"/>
+<s:enumeration value="P_Blocked_based_on_SP_code"/>
+<s:enumeration value="P_Failure1"/>
+<s:enumeration value="P_Failure2"/>
+<s:enumeration value="P_Failure3"/>
+<s:enumeration value="P_Failure4"/>
+<s:enumeration value="P_Illegal_Order_Qty_Increment"/>
+<s:enumeration value="P_Verify_UserName_Password_Terminal_ID_or_Database_Details"/>
+<s:enumeration value="P_Order_Qty_does_not_fall_in_valid_range_or_Item_Price_not_defined_for_Dealer"/>
+<s:enumeration value="P_The_Item_does_Not_Exist"/>
+<s:enumeration value="P_Dealer_exceeded_credit_limit"/>
+<s:enumeration value="success"/>
+<s:enumeration value="Code_of_reqest_is_not_known_Please_send_anew_reqest"/>
+<s:enumeration value="ManualSucceed"/>
+<s:enumeration value="ManualCardMissed"/>
+<s:enumeration value="Problem_with_connection_or_access_to_DB_or_problem_is_not_known"/>
+<s:enumeration value="transaction_source_does_not_known"/>
+<s:enumeration value="_or_sum_is_not_valid"/>
+<s:enumeration value="Overdraft_from_the_balance_that_defined_in_the_bank"/>
+<s:enumeration value="Invalid_date"/>
+<s:enumeration value="subscriber_is_not_subscribed_to_Tokmen"/>
+<s:enumeration value="Error_when_checking_the_checksum_by_cellcum"/>
+<s:enumeration value="Request_faild"/>
+<s:enumeration value="Unknown_result"/>
+<s:enumeration value="Error_when_checking_the_checksum_by_peletalk"/>
+<s:enumeration value="Invalid_reqest_from_cellcum"/>
+<s:enumeration value="Connect_failed"/>
+<s:enumeration value="Invalid_answer_from_pelephone"/>
+<s:enumeration value="Cellcum_Check_begin"/>
+<s:enumeration value="Cellcum_Check_Success"/>
+<s:enumeration value="Cancellation_with_out_loading"/>
+<s:enumeration value="All_amount_be_used"/>
+<s:enumeration value="Cancellation_arrive_delay"/>
+<s:enumeration value="Cancellation_Begin"/>
+<s:enumeration value="Cancellation_Success"/>
+<s:enumeration value="Catalog_number_does_not_exist"/>
+<s:enumeration value="Amount_came_from_the_seller_doesnt_match_the_product_catalog"/>
+<s:enumeration value="Unable_to_load_without_basic_package_of_50_shekels"/>
+<s:enumeration value="Double_Reference"/>
+<s:enumeration value="GlobalSim_Order_Synced_successfully"/>
+<s:enumeration value="GlobalSim_Order_successfully_Processed"/>
+<s:enumeration value="GlobalSim_Invalid_MSISDN"/>
+<s:enumeration value="GlobalSim_Blocked_based_on_SP_code"/>
+<s:enumeration value="GlobalSim_Failure1"/>
+<s:enumeration value="GlobalSim_Failure2"/>
+<s:enumeration value="GlobalSim_Failure3"/>
+<s:enumeration value="GlobalSim_Failure4"/>
+<s:enumeration value="GlobalSim_Illegal_Order_Qty_Increment"/>
+<s:enumeration value="GlobalSim_Verify_UserName_Password_Terminal_ID_or_Database_Details"/>
+<s:enumeration value="GlobalSim_Order_Qty_does_not_fall_in_valid_range_or_Item_Price_not_defined_for_Dealer"/>
+<s:enumeration value="GlobalSim_The_Item_does_Not_Exist"/>
+<s:enumeration value="GlobalSim_Dealer_exceeded_credit_limit"/>
+<s:enumeration value="GlobalSim_Invalid_Dealer"/>
+<s:enumeration value="GlobalSim_Invalid_Dealer_Terminal"/>
+<s:enumeration value="GlobalSim_Invalid_Order_Number_Already_In_Use"/>
+<s:enumeration value="GlobalSim_Invalid_TopUp_AirTime_NotFound"/>
+<s:enumeration value="GlobalSim_Invalid_TopUp_AccessDays_NotFound"/>
+<s:enumeration value="GlobalSim_Invalid_ItemPrice_NotFound"/>
+<s:enumeration value="GlobalSim_Invalid_Sales_Order_Process_Pre_Evaluate_Failed"/>
+<s:enumeration value="GlobalSim_Invalid_Order_Qty_Less_Than_Allowed"/>
+<s:enumeration value="GlobalSim_Internal_System_Error"/>
+<s:enumeration value="GlobalSim_Invalid_Item_Type"/>
+<s:enumeration value="GlobalSim_Invalid_MSISDN_Is_Blocked"/>
+<s:enumeration value="GlobalSim_Error_Calling_Web_Service"/>
+<s:enumeration value="GlobalSim_Error_Validation_Request"/>
+<s:enumeration value="Cellcum2_success"/>
+<s:enumeration value="Cellcum2_Code_of_reqest_is_not_known_Please_send_anew_reqest"/>
+<s:enumeration value="Cellcum2_Problem_with_connection_or_access_to_DB_or_problem_is_not_known"/>
+<s:enumeration value="Cellcum2_transaction_source_does_not_known"/>
+<s:enumeration value="Cellcum2__or_sum_is_not_valid"/>
+<s:enumeration value="Cellcum2_Overdraft_from_the_balance_that_defined_in_the_bank"/>
+<s:enumeration value="Cellcum2_Invalid_date"/>
+<s:enumeration value="Cellcum2_subscriber_is_not_subscribed_to_Tokmen"/>
+<s:enumeration value="Cellcum2_Error_when_checking_the_checksum_by_cellcum"/>
+<s:enumeration value="Cellcum2_Request_faild"/>
+<s:enumeration value="Cellcum2_Invalid_reqest_from_cellcum"/>
+<s:enumeration value="Cellcum2_Cellcum_Check_begin"/>
+<s:enumeration value="Cellcum2_Cellcum_Check_Success"/>
+<s:enumeration value="Cellcum2_Cancellation_with_out_loading"/>
+<s:enumeration value="Cellcum2_All_amount_be_used"/>
+<s:enumeration value="Cellcum2_Cancellation_arrive_delay"/>
+<s:enumeration value="Cellcum2_Cancellation_Begin"/>
+<s:enumeration value="Cellcum2_Cancellation_Success"/>
+<s:enumeration value="Cellcum2_Catalog_number_does_not_exist"/>
+<s:enumeration value="Cellcum2_Amount_came_from_the_seller_doesnt_match_the_product_catalog"/>
+<s:enumeration value="Cellcum2_Unable_to_load_without_basic_package_of_50_shekels"/>
+<s:enumeration value="Cellcum2_Double_Reference"/>
+<s:enumeration value="OrangeSuccess"/>
+<s:enumeration value="OrangeFail"/>
+<s:enumeration value="OrangeGetResponseException"/>
+<s:enumeration value="OrangeRequestException"/>
+<s:enumeration value="OrangePartnerSuccess"/>
+<s:enumeration value="OrangePPaccountnotactiveyet"/>
+<s:enumeration value="OrangeVerificationofchargedetailsisallowed"/>
+<s:enumeration value="OrangeDetailsofchargearenotallowedafterverificationabovethechargelimit"/>
+<s:enumeration value="OrangeDealernotfound"/>
+<s:enumeration value="OrangeDealerorComNetNotFound"/>
+<s:enumeration value="OrangeDealerSuspended"/>
+<s:enumeration value="OrangeComNetSuspended"/>
+<s:enumeration value="OrangeThroghtputExeeded"/>
+<s:enumeration value="OrangeInternalError"/>
+<s:enumeration value="OrangeInvalidPaymentType"/>
+<s:enumeration value="OrangePaymentTypeNotAllowdforDealer_CommericialNetwork"/>
+<s:enumeration value="OrangeTransactionNotFound"/>
+<s:enumeration value="OrangeInvalidPPASStatus"/>
+<s:enumeration value="OrangeSyntaxErrorinPPASrequest"/>
+<s:enumeration value="OrangeServiceNotAvilable"/>
+<s:enumeration value="OrangeInvalidDigitalSignature"/>
+<s:enumeration value="OrangeInvalidPAMIparameteronrequest"/>
+<s:enumeration value="OrangeErrorconnectingtoPrePaidPlatform"/>
+<s:enumeration value="OrangeInvalidPPASresponse"/>
+<s:enumeration value="OrangeUnabletoconnecttoPPASDB"/>
+<s:enumeration value="OrangeErrorsubmittingpushsmsrequesttoOuch"/>
+<s:enumeration value="OrangeInvalidparameter"/>
+<s:enumeration value="OrangeErrorconnectingtoDB"/>
+<s:enumeration value="OrangeMaximumbalanceexceeded"/>
+<s:enumeration value="OrangeMSISDNisnotvalidPrePaid"/>
+<s:enumeration value="OrangeRequestedamountistoolow"/>
+<s:enumeration value="OrangeInvalidSearchtype"/>
+<s:enumeration value="OrangeErrorClosingConnectiontoDB"/>
+<s:enumeration value="OrangeErrorexecutingstoredprocedureinDB"/>
+<s:enumeration value="OrangeUnknownError"/>
+<s:enumeration value="OrangeTheEndUnitIdisnotallowedfortheDealer_ComNet"/>
+<s:enumeration value="OrangeThetransactionisdepening"/>
+<s:enumeration value="OrangePPASUnavailable"/>
+<s:enumeration value="OrangeInvaliduserorpassword"/>
+<s:enumeration value="OrangeInvalidAmountNotRounded"/>
+<s:enumeration value="OrangePrePaidSysteminternalerror"/>
+<s:enumeration value="OrangeComNetcantusethisAccountName"/>
+<s:enumeration value="OrangeAccountNamenotexistinthedb"/>
+<s:enumeration value="OrangeUserCreditupdatefailed"/>
+<s:enumeration value="OrangePPaccountnotactiveyetNeedstocall111"/>
+<s:enumeration value="OrangeInvalidTransactionAmount"/>
+<s:enumeration value="Mobile012Success"/>
+<s:enumeration value="Mobile012PPaccountnotactiveyet"/>
+<s:enumeration value="Mobile012Verificationofchargedetailsisallowed"/>
+<s:enumeration value="Mobile012Detailsofchargearenotallowedafterverificationabovethechargelimit"/>
+<s:enumeration value="Mobile012Dealernotfound"/>
+<s:enumeration value="Mobile012DealerorComNetNotFound"/>
+<s:enumeration value="Mobile012DealerSuspended"/>
+<s:enumeration value="Mobile012ComNetSuspended"/>
+<s:enumeration value="Mobile012ThroghtputExeeded"/>
+<s:enumeration value="Mobile012InternalError"/>
+<s:enumeration value="Mobile012InvalidPaymentType"/>
+<s:enumeration value="Mobile012PaymentTypeNotAllowdforDealer_CommericialNetwork"/>
+<s:enumeration value="Mobile012TransactionNotFound"/>
+<s:enumeration value="Mobile012InvalidPPASStatus"/>
+<s:enumeration value="Mobile012SyntaxErrorinPPASrequest"/>
+<s:enumeration value="Mobile012ServiceNotAvilable"/>
+<s:enumeration value="Mobile012InvalidDigitalSignature"/>
+<s:enumeration value="Mobile012InvalidPAMIparameteronrequest"/>
+<s:enumeration value="Mobile012ErrorconnectingtoPrePaidPlatform"/>
+<s:enumeration value="Mobile012InvalidPPASresponse"/>
+<s:enumeration value="Mobile012UnabletoconnecttoPPASDB"/>
+<s:enumeration value="Mobile012ErrorsubmittingpushsmsrequesttoOuch"/>
+<s:enumeration value="Mobile012Invalidparameter"/>
+<s:enumeration value="Mobile012ErrorconnectingtoDB"/>
+<s:enumeration value="Mobile012Maximumbalanceexceeded"/>
+<s:enumeration value="Mobile012MSISDNisnotvalidPrePaid"/>
+<s:enumeration value="Mobile012Requestedamountistoolow"/>
+<s:enumeration value="Mobile012InvalidSearchtype"/>
+<s:enumeration value="Mobile012ErrorClosingConnectiontoDB"/>
+<s:enumeration value="Mobile012ErrorexecutingstoredprocedureinDB"/>
+<s:enumeration value="Mobile012UnknownError"/>
+<s:enumeration value="Mobile012TheEndUnitIdisnotallowedfortheDealer_ComNet"/>
+<s:enumeration value="Mobile012Thetransactionisdepening"/>
+<s:enumeration value="Mobile012PPASUnavailable"/>
+<s:enumeration value="Mobile012Invaliduserorpassword"/>
+<s:enumeration value="Mobile012InvalidAmountNotRounded"/>
+<s:enumeration value="Mobile012PrePaidSysteminternalerror"/>
+<s:enumeration value="Mobile012ComNetcantusethisAccountName"/>
+<s:enumeration value="Mobile012AccountNamenotexistinthedb"/>
+<s:enumeration value="Mobile012UserCreditupdatefailed"/>
+<s:enumeration value="Mobile012PPaccountnotactiveyetNeedstocall111"/>
+<s:enumeration value="Mobile012InvalidTransactionAmount"/>
+<s:enumeration value="MirsLoadSucceed"/>
+<s:enumeration value="MirsLoadFailed"/>
+<s:enumeration value="MirsCheckSuccess"/>
+<s:enumeration value="MirsCheckFailed"/>
+<s:enumeration value="MirsCancelFailed"/>
+<s:enumeration value="MirsInvalidDistIDForInternalUse"/>
+<s:enumeration value="MirsNoPriceListforproduct"/>
+<s:enumeration value="MirsInsufficientDistributorBalance"/>
+<s:enumeration value="MirsInsufficientDistrbutorPeriodBalance"/>
+<s:enumeration value="MirsAddTransactionreturnednorowsForInternalUse"/>
+<s:enumeration value="MirsDistributornotfound"/>
+<s:enumeration value="MirsDistributorisblocked"/>
+<s:enumeration value="MirsInvalidpassword"/>
+<s:enumeration value="MirsProductNotFound"/>
+<s:enumeration value="MirsSQLError"/>
+<s:enumeration value="MirsFailedGettingTransactionForInternalUse"/>
+<s:enumeration value="MirsTheMirsWebServicecallfailed"/>
+<s:enumeration value="MirsTheMirsWebServiceConfigdataisinvalid"/>
+<s:enumeration value="MirsNonnumericsubscriberphone"/>
+<s:enumeration value="MirsIncorrectPhoneNumberLength"/>
+<s:enumeration value="MirsPasswordExpired"/>
+<s:enumeration value="MirsTemporarilyBlockedforIllegalEntry"/>
+<s:enumeration value="MirsSendMailFailedInvalidBlockNotificationEmailAddress"/>
+<s:enumeration value="MirsBlockNotificationSendMailFailed"/>
+<s:enumeration value="MirsInternalErrorBlockNotificationSendMailFailed"/>
+<s:enumeration value="MirsWrongExpectedCostforDistributor"/>
+<s:enumeration value="MirsTransactionNotFound"/>
+<s:enumeration value="MirsTransactionAlreadyCancelled"/>
+<s:enumeration value="MirsTransactionWasNotAccepted"/>
+<s:enumeration value="MirsTransactionTooOld"/>
+<s:enumeration value="MirsNoMatchingSubscriberQueryCall"/>
+<s:enumeration value="MirsMatchingSubscriberQueryWasUnsuccessful"/>
+<s:enumeration value="MirsMatchingSubscriberQueryTooOld"/>
+<s:enumeration value="MirsNotAllowedtoCancelOwnTransactions"/>
+<s:enumeration value="MirsNotAllowedtoCancelAllTransactions"/>
+<s:enumeration value="MirsDuplicateRequestIsCopy"/>
+<s:enumeration value="MirsMissingDistTransCode"/>
+<s:enumeration value="MirsMissingident"/>
+<s:enumeration value="MirsMissingpass"/>
+<s:enumeration value="MirsMissingProdCde"/>
+<s:enumeration value="MirsMissingSbsc"/>
+<s:enumeration value="MirsMissingDistTransCodeandSerialNo"/>
+<s:enumeration value="MirsSerialNoMismatch"/>
+<s:enumeration value="MirsMissingRefillCode"/>
+<s:enumeration value="MirsMissingDistNumber"/>
+<s:enumeration value="MirsInvalidCredentials"/>
+<s:enumeration value="MirsNotSoapRequest"/>
+<s:enumeration value="MirsTooManyOrNotEnoughSecurityTokens"/>
+<s:enumeration value="MirsInvalidPasswordType"/>
+<s:enumeration value="MirsUsernameTokenExpected"/>
+<s:enumeration value="MirsRequestTooOld"/>
+<s:enumeration value="MirsNotSufficientPriviledges"/>
+<s:enumeration value="MirsInvalidUsername"/>
+<s:enumeration value="MirsUserNotFoundInCache"/>
+<s:enumeration value="MirsInvalidNewPasswordLength"/>
+<s:enumeration value="MirsUndecryptablePassword"/>
+<s:enumeration value="MirsPasswordExpired2"/>
+<s:enumeration value="MirsCustomercareusersgroupisnotfound"/>
+<s:enumeration value="MirsCCUserisnotallowedtosetbalancebelowCOSMin"/>
+<s:enumeration value="MirsCCUserisnotallowedtoadjustbalance"/>
+<s:enumeration value="MirsCCUserpertransactionlimitexceededforbalance"/>
+<s:enumeration value="MirsCCUserdailytransactionlimitexceededforbalance"/>
+<s:enumeration value="MirsUndefinedError"/>
+<s:enumeration value="MirsCMIsNotCached"/>
+<s:enumeration value="MirsServiceVersionNotAvailable"/>
+<s:enumeration value="MirsDatabaseIsNotAvailable"/>
+<s:enumeration value="MirsInvalidCurrencyUnit"/>
+<s:enumeration value="MirsOracleIntegrityConstraint"/>
+<s:enumeration value="MirsOracleChildConstraint"/>
+<s:enumeration value="MirsOracleDuplicateKey"/>
+<s:enumeration value="MirsOracleDataIntegrity"/>
+<s:enumeration value="MirsUnableToExecStoredProc"/>
+<s:enumeration value="MirsUnableToExecuteDatabaseQuery"/>
+<s:enumeration value="MirsNotConnectedToRequestedNode"/>
+<s:enumeration value="MirsNotConnectedToMasterSDP"/>
+<s:enumeration value="MirsUnableToRetrieveTheRangeMap"/>
+<s:enumeration value="MirsSubscriberInvalidTablesToRetriveCode"/>
+<s:enumeration value="MirsSubscriberInvalidRequest"/>
+<s:enumeration value="MirsSubscriberInvalidSubscriberId"/>
+<s:enumeration value="MirsSubscriberIsNotInRangeMap"/>
+<s:enumeration value="MirsSubscriberNotFound"/>
+<s:enumeration value="MirsSubscriberBalanceUndefinedBalanceNameSubscriberbalanceunknownname"/>
+<s:enumeration value="MirsSubscriberBalanceInvalidForCOS"/>
+<s:enumeration value="MirsSubscriberUnableToRetrieve"/>
+<s:enumeration value="MirsSubscriberUnableToAddCredit"/>
+<s:enumeration value="MirsSubscriberIdentityDoesNotExist"/>
+<s:enumeration value="MirsInvalidChargeCode"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToCreateSubscriber"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToDeleteSubscriber"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeCos"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeBalance"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangePhonebook"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeSubinfo"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangePromotion"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeCallforward"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeLanguage"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeTimezone"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeLocation"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangePercharge"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeState"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangePin"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeImsi"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeSubscriber"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewReservation"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToCancelReservation"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewSubscriber"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewLocation"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewCallhistory"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewMtr"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewPshistory"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewRechargehist"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewCallforward"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewPhonebook"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewPromotion"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewVpn"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewSubinfo"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewPercharge"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToRechargeSubscriber"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToCreateVoucher"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToDeleteVoucher"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewVoucher"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeVoucherState"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToUseVoucher"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToSendSMS"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeNotificationLevel"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToChangeNP"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToRetrieveNP"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToDeleteNP"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToProvisionCurrencyConversion"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToRetrieveCurrencyConversion"/>
+<s:enumeration value="MirsInsufficientprivilegestochangeaccumulator"/>
+<s:enumeration value="MirsInsufficientprivilegestochangecallingcircle"/>
+<s:enumeration value="MirsInsufficientprivilegestoretrievecallingcircle"/>
+<s:enumeration value="MirsNotSufficientPrivilegesToViewFandFPhonebookHistory"/>
+<s:enumeration value="MirsCallingCircleUnableToRetrieve"/>
+<s:enumeration value="MirsCCUserisnotintheServiceProviderdomain"/>
+<s:enumeration value="MirsInvalidConfigMonitorFieldValue"/>
+<s:enumeration value="MirsGAAWIUserNotAllowedAccessToTheMethod"/>
+<s:enumeration value="MirsAWIUserNotAllowedAccessToTheGroup"/>
+<s:enumeration value="MirsNoPrivilegesToEditGroupIDName"/>
+<s:enumeration value="MirsNoPrivilegesToEditOwnerID"/>
+<s:enumeration value="MirsNoPrivilegesToEditRefurbish"/>
+<s:enumeration value="MirsNoPrivilegesToEditNotifHand"/>
+<s:enumeration value="MirsNoPrivilegesToEditCUG"/>
+<s:enumeration value="MirsNoPrivilegesToEditCOS"/>
+<s:enumeration value="MirsNoPrivilegesToEditPrdChrgApply"/>
+<s:enumeration value="MirsNoPrivilegesToEditCurrency"/>
+<s:enumeration value="MirsNoPrivilegesToEditDefaults"/>
+<s:enumeration value="MirsNoPrivilegesToEditAccountDetail"/>
+<s:enumeration value="MirsGroupMemberHaveNoBalanceException"/>
+<s:enumeration value="MirsMsg_AckInvlid"/>
+<s:enumeration value="P_Invalid_Dealer"/>
+<s:enumeration value="P_Invalid_Dealer_Terminal"/>
+<s:enumeration value="P_Invalid_Order_Number_Already_In_Use"/>
+<s:enumeration value="P_Invalid_TopUp_AirTime_NotFound"/>
+<s:enumeration value="P_Invalid_TopUp_AccessDays_NotFound"/>
+<s:enumeration value="P_Invalid_ItemPrice_NotFound"/>
+<s:enumeration value="P_Invalid_Sales_Order_Process_Pre_Evaluate_Failed"/>
+<s:enumeration value="P_Invalid_Order_Qty_Less_Than_Allowed"/>
+<s:enumeration value="P_Internal_System_Error"/>
+<s:enumeration value="P_Invalid_Item_Type"/>
+<s:enumeration value="P_Invalid_MSISDN_Is_Blocked"/>
+<s:enumeration value="P_Error_Calling_Web_Service"/>
+<s:enumeration value="P_Error_Validation_Request"/>
+<s:enumeration value="NetVision013LoadSuccess"/>
+<s:enumeration value="NetVisionamountistoosmall"/>
+<s:enumeration value="NetVisionamountistoobig"/>
+<s:enumeration value="NetVisionPhoneNumberalreadyexistsforserviceaccountuseserviceforexistingacount"/>
+<s:enumeration value="NetVisionPhoneNumbernotregisteredUseTopUpservicefornewaccount"/>
+<s:enumeration value="NetVisionPhoneNumberisregisteredforserviceandnottoservicePleasechangeservice"/>
+<s:enumeration value="NetVisionServicedemandedinvalid"/>
+<s:enumeration value="NetVisionInternalerrorproviderempty"/>
+<s:enumeration value="NetVisionInternalerrorprovidernotvalid"/>
+<s:enumeration value="NetVisionInternalerrorrprovidernotdeclared"/>
+<s:enumeration value="NetVisionInternalerrorproviderinvalidtransactiontoolong"/>
+<s:enumeration value="NetVisionInternalerrorPhoneNumberregisteredforaccountbutaccountnotfound"/>
+<s:enumeration value="NetVisionInternalerrorPhoneNumberregisteredforaccountbutbatchnotfound"/>
+<s:enumeration value="NetVisionInternalerrorPhoneNumberregisteredforaccountbutserviceclassNotfound"/>
+<s:enumeration value="NetVisionInternalerrorcannotgenerateapincodeforservice"/>
+<s:enumeration value="NetVisionInternalerrorcannotaddanewaccountforservice"/>
+<s:enumeration value="NetVisionInternalerrorPleasecontactcustomersupport"/>
+<s:enumeration value="NetVisionPhoneNumberregisteredforanexpiredaccountuseservicefornewACCOUNT"/>
+<s:enumeration value="NetVisionPhoneNumberregisteredforaccountbutaccountSTATUSis"/>
+<s:enumeration value="NetVisionPhoneNumberregisteredforaccountbutaccountisINUSE"/>
+<s:enumeration value="NetVisionWrongphonenumbermuststartwithzero"/>
+<s:enumeration value="NetVisionWrongphonenumbertooshort"/>
+<s:enumeration value="NetVisionWrongphonenumbertoolong"/>
+<s:enumeration value="PaymentSuccess"/>
+<s:enumeration value="PaymentSuccessWithError"/>
+<s:enumeration value="PaymentNeedManual"/>
+<s:enumeration value="PaymentFail"/>
+<s:enumeration value="GetDebtSuccess"/>
+<s:enumeration value="GetDebtFail"/>
+<s:enumeration value="GetDetailsSuccess"/>
+<s:enumeration value="GetDetailsFail"/>
+<s:enumeration value="PrepaidSuccess"/>
+<s:enumeration value="PrepaidFail"/>
+<s:enumeration value="ActionFailed"/>
+<s:enumeration value="GetDebtDetailsForPaySuccess"/>
+<s:enumeration value="GetDebtDetailsForPayFail"/>
+<s:enumeration value="PaymentHandling"/>
+<s:enumeration value="PaymentExceeded"/>
+<s:enumeration value="WataniyaPending"/>
+<s:enumeration value="WataniyaSuccess"/>
+<s:enumeration value="WataniyaFailed"/>
+<s:enumeration value="WataniyaUnknown"/>
+<s:enumeration value="JawwalPending"/>
+<s:enumeration value="JawwalSuccess"/>
+<s:enumeration value="JawwalFailed"/>
+<s:enumeration value="JawwalUnknown"/>
+<s:enumeration value="Jawwal2NoAdminBalance"/>
+<s:enumeration value="Jawwal2Success"/>
+<s:enumeration value="Jawwal2Failed"/>
+<s:enumeration value="Jawwal2InvalidCellularNum"/>
+<s:enumeration value="Jawwal2DoubleLoad"/>
+<s:enumeration value="Wataniya2Success"/>
+<s:enumeration value="Wataniya2Failed"/>
+<s:enumeration value="Wataniya2NoAdminBalance"/>
+<s:enumeration value="Wataniya2InvalidCellularNum"/>
+<s:enumeration value="ContractDoesNotExistOrRunOutAccount"/>
+<s:enumeration value="ClientNotClientMTM"/>
+<s:enumeration value="TheCustomerObligations"/>
+<s:enumeration value="AmountTooLowMustPressHighAmount"/>
+<s:enumeration value="TheAmountTooHighYouMustPressLessThan"/>
+<s:enumeration value="SellDoubleWasForSaleWithSameDataPleaseComeBack"/>
+<s:enumeration value="ThereNoSaleRetrieve"/>
+<s:enumeration value="NoExtraAmountWithCents"/>
+<s:enumeration value="TheSystemWasBusyPleaseTryAgain"/>
+<s:enumeration value="SellingSameAmountWasLastTurnedDifferentAmount"/>
+<s:enumeration value="YouCanNotMakeSalePleaseContactIEC"/>
+<s:enumeration value="ContractDoesNotExist"/>
+<s:enumeration value="TheCustomerNoDebtsToPay"/>
+<s:enumeration value="YouCanNotCancelPaymentMatam"/>
+<s:enumeration value="ThereNoFaceCancellation"/>
+<s:enumeration value="YouCanNotCancelApproved"/>
+<s:enumeration value="HerFaceOpenToThisContractDoComeBack"/>
+<s:enumeration value="ThereNoFaceRetrieval"/>
+<s:enumeration value="YouNotAuthorizedToAccessRequestsWereEstablishedPath"/>
+<s:enumeration value="TheAmountTooHighToPayCredit"/>
+<s:enumeration value="YouCanNotPayBillForParts"/>
+<s:enumeration value="ContractNotAppropriateReferenceNumber"/>
+<s:enumeration value="YouCanNotMakePaymentPleaseContactIEC"/>
+<s:enumeration value="LoadTimeTryAgain"/>
+<s:enumeration value="HerFaceSameItNowInProgress"/>
+<s:enumeration value="NoComputerSystemNowAvailable"/>
+<s:enumeration value="UserOrPasswordNotValid"/>
+<s:enumeration value="ProviderKodNotValid"/>
+<s:enumeration value="TerminulNumNotValid"/>
+<s:enumeration value="SumDebtsNotValid"/>
+<s:enumeration value="ServiceIDNotExists"/>
+<s:enumeration value="TheInfrastructureProblemMFPleaseContactIEC"/>
+<s:enumeration value="ConfirmationSuccess"/>
+<s:enumeration value="ConfirmationFail"/>
+<s:enumeration value="RetrievingSuccess"/>
+<s:enumeration value="RetrievingSucceededWithoutCharge"/>
+<s:enumeration value="RetrievingFail"/>
+<s:enumeration value="ActionBeginning"/>
+<s:enumeration value="CancelationPaymentSuccess"/>
+<s:enumeration value="CancelationPaymentFail"/>
+<s:enumeration value="ProblemLocatingDebtOrBarcode"/>
+<s:enumeration value="NoConfirmationFromCredit"/>
+<s:enumeration value="ProblemGetPayOnIEC"/>
+<s:enumeration value="CanNotPayWithCredit"/>
+<s:enumeration value="CommunicationFailuresCreditCompany"/>
+<s:enumeration value="RequestIdentifyingNotExist"/>
+<s:enumeration value="ProblemWithCancelPay"/>
+<s:enumeration value="ConfirmationCreditCardSuccess"/>
+<s:enumeration value="ConfirmationCreditCardFail"/>
+<s:enumeration value="PaymentSuccess_Charge"/>
+<s:enumeration value="PaymentSuccess_Cancellation"/>
+<s:enumeration value="ValidCreditCardSmallerThanToday"/>
+<s:enumeration value="CancellationPaymentSuccess_Charge"/>
+<s:enumeration value="CancellationPaymentSuccess_Cancellation"/>
+<s:enumeration value="ContractNotExists"/>
+<s:enumeration value="ClientNotMTM"/>
+<s:enumeration value="CustomerHasDebt"/>
+<s:enumeration value="SumTooLow"/>
+<s:enumeration value="SumTooHigh"/>
+<s:enumeration value="DoubleSale"/>
+<s:enumeration value="NoSaleToRetrieve"/>
+<s:enumeration value="SumCantContainAgorot"/>
+<s:enumeration value="SystemIsBusy"/>
+<s:enumeration value="RetryWithDifferentAmount"/>
+<s:enumeration value="CantMakeSaleContactIEC"/>
+<s:enumeration value="ContractNotExist"/>
+<s:enumeration value="CustomerHasNoDebts"/>
+<s:enumeration value="CantCancelMTM"/>
+<s:enumeration value="NoCancellationRequest"/>
+<s:enumeration value="CantCancelApprovedTransaction"/>
+<s:enumeration value="ThereIsOpenRequestForThisContract"/>
+<s:enumeration value="NoRetrievalRequest"/>
+<s:enumeration value="YouAreNotAuthorizedToAccess"/>
+<s:enumeration value="SumTooHighForCreditPayment"/>
+<s:enumeration value="CantPayBillInPartialAmount"/>
+<s:enumeration value="ContractNotFitReferenceNumber"/>
+<s:enumeration value="CantMakePaymentContactIEC"/>
+<s:enumeration value="TemporaryOverloadTryAgain"/>
+<s:enumeration value="SameRequestIsNowInProgress"/>
+<s:enumeration value="ComputingSystemIsNotAvailable"/>
+<s:enumeration value="UserOrPasswordInvalid"/>
+<s:enumeration value="InvalidProviderCode"/>
+<s:enumeration value="InvalidTerminalNum"/>
+<s:enumeration value="InvalidSumDebt"/>
+<s:enumeration value="ServiceIdNotExists"/>
+<s:enumeration value="InfrastructureProblemContactIEC"/>
+<s:enumeration value="IECPaymentStarted"/>
+<s:enumeration value="IECNoItemsOpenForApproval"/>
+<s:enumeration value="IECNoItemsOpenForApprovalMatam"/>
+<s:enumeration value="MatamSaleContinuedOverPermittedTime"/>
+<s:enumeration value="NoSaleForRetrieve"/>
+<s:enumeration value="NoSaleForRetrieveMatam"/>
+<s:enumeration value="NoInvoiceOrContractForThisBarcode"/>
+<s:enumeration value="NoInvoiceOrContractForThisBarcodeMatam"/>
+<s:enumeration value="NoOutstandingBalanceForThisInvoice"/>
+<s:enumeration value="NoOutstandingBalanceForThisInvoiceMatam"/>
+<s:enumeration value="PartialDebtBalanceContactIEC"/>
+<s:enumeration value="PartialDebtBalanceContactIECMatam"/>
+<s:enumeration value="InCorrectRequestedServiceType"/>
+<s:enumeration value="InCorrectRequestedServiceTypeMatam"/>
+<s:enumeration value="ContractNotExistOrRunOutAccount"/>
+<s:enumeration value="ContractNotExistOrRunOutAccountMTM"/>
+<s:enumeration value="InputFieldsAreIncomplete"/>
+<s:enumeration value="InputFieldsAreIncompleteMTM"/>
+<s:enumeration value="IncorrectPaymentMethod"/>
+<s:enumeration value="IncorrectPaymentMethodMatam"/>
+<s:enumeration value="RequestedServiceNotConfiguredForThisProvider"/>
+<s:enumeration value="RequestedServiceNotConfiguredForThisProviderMatam"/>
+<s:enumeration value="InputFieldsIncomplete"/>
+<s:enumeration value="InputFieldsIncompleteMatam"/>
+<s:enumeration value="CreatePaymentFailed"/>
+<s:enumeration value="CreatePaymentFailedMatam"/>
+<s:enumeration value="PaymentFormSummaryError"/>
+<s:enumeration value="PaymentFormSummaryErrorMatam"/>
+<s:enumeration value="ErrorSketchAndAdjustDocument"/>
+<s:enumeration value="ErrorSketchAndAdjustDocumentMatam"/>
+<s:enumeration value="RequestedAmountDifferentFromSimulationAmount"/>
+<s:enumeration value="RequestedAmountDifferentFromSimulationAmountMatam"/>
+<s:enumeration value="ErrorDecodingEncryptedCodeContactLTO"/>
+<s:enumeration value="ErrorDecodingEncryptedCodeContactLTOMatam"/>
+<s:enumeration value="UpdatePymentPlanFailedContactAMAT"/>
+<s:enumeration value="UpdatePymentPlanFailedContactAMATMatam"/>
+<s:enumeration value="CreateInvoiceFailedContactLTO"/>
+<s:enumeration value="CreateInvoiceFailedContactLTOMatam"/>
+<s:enumeration value="CreditCardNotAuthorizedForProvider"/>
+<s:enumeration value="CreditCardNotAuthorizedForProviderMatam"/>
+<s:enumeration value="NoRequestForApproval"/>
+<s:enumeration value="NoRequestForApprovalMatam"/>
+<s:enumeration value="PaymentMustBeRecievedBeforeSale"/>
+<s:enumeration value="PaymentMustBeRecievedBeforeSaleMatam"/>
+<s:enumeration value="SaleAmountHaveToBeEqualToPaymentAmount"/>
+<s:enumeration value="SaleAmountHaveToBeEqualToPaymentAmountMatam"/>
+<s:enumeration value="NoKodReturned"/>
+<s:enumeration value="ConfirmedLocalPayment"/>
+<s:enumeration value="ValidUserAccount"/>
+<s:enumeration value="ValidReciptNumber"/>
+<s:enumeration value="NoBillPayment"/>
+<s:enumeration value="InvoicePaied"/>
+<s:enumeration value="ValidAmount"/>
+<s:enumeration value="HotMobileSuccess"/>
+<s:enumeration value="ResellerNotFound"/>
+<s:enumeration value="AuthenticationFailed"/>
+<s:enumeration value="UserNotActive"/>
+<s:enumeration value="CreditLimit"/>
+<s:enumeration value="UserNotFound"/>
+<s:enumeration value="TransactionNotFound"/>
+<s:enumeration value="TransactionWithThisUniqueTransIdAlreadyExists"/>
+<s:enumeration value="WrongProduct"/>
+<s:enumeration value="ErrorLoadingMoney"/>
+<s:enumeration value="SumLessSumMinimum"/>
+<s:enumeration value="SumMoreSumMaximum"/>
+<s:enumeration value="NotDefine"/>
+<s:enumeration value="ErrorPhoneNumber"/>
+<s:enumeration value="ProviderNotWork"/>
+<s:enumeration value="CancelTransactionNotFound"/>
+<s:enumeration value="CancelProblem"/>
+<s:enumeration value="GeneralError"/>
+<s:enumeration value="PrivateNumberLoadSuccess"/>
+<s:enumeration value="PrivateNumberLoadFailed"/>
+<s:enumeration value="PrivateNumberCancelFailed"/>
+<s:enumeration value="PrivateNumberCancelSuccess"/>
+<s:enumeration value="Webapp012LoadSucceed"/>
+<s:enumeration value="Webapp012LoadFailed"/>
+<s:enumeration value="Webapp012CancelSucceed"/>
+<s:enumeration value="Webapp012CancelFailed"/>
+<s:enumeration value="BezekInternationalLoadFailed"/>
+<s:enumeration value="BezekInternationalLoadSuccess"/>
+<s:enumeration value="BezekInternationalCancellationFailed"/>
+<s:enumeration value="BezekInternationalCancellationSuccess"/>
+<s:enumeration value="FreephoneLoadFailed"/>
+<s:enumeration value="FreephoneLoadSuccess"/>
+<s:enumeration value="FreephoneUserNotExists"/>
+<s:enumeration value="RavkavSuccess"/>
+<s:enumeration value="RavkavFailure"/>
+<s:enumeration value="RavkavContractNotAvailable"/>
+<s:enumeration value="RavkavThereIsOpenPurchaseForThisCard"/>
+<s:enumeration value="RavkavTransactionAborted"/>
+<s:enumeration value="RavkavReloadingAborted"/>
+<s:enumeration value="RavkavTransactionAbortingFailed"/>
+<s:enumeration value="RavkavReloadingAbortingFailed"/>
+<s:enumeration value="RavkavCancellationSuccess"/>
+<s:enumeration value="RavkavCancellationFailure"/>
+<s:enumeration value="RavkavReloadingCancellationAborted"/>
+<s:enumeration value="RavkavReloadingCancellationAbortedFailed"/>
+</s:restriction>
+</s:simpleType>
+<s:complexType name="ManualLoadResponse">
+<s:complexContent mixed="false">
+<s:extension base="tns:LoadResponse">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="Card" type="tns:clsCards"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="clsCards">
+<s:complexContent mixed="false">
+<s:extension base="tns:clsBaseEntities">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderProducts" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="CardNumber" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="IsUsed" type="s:boolean"/>
+<s:element minOccurs="1" maxOccurs="1" name="ExpiryDate" type="s:dateTime"/>
+<s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime"/>
+<s:element minOccurs="1" maxOccurs="1" name="ChangedBy" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="CardCode" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="CardIncomeDate" type="s:dateTime"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="clsBaseEntities">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="clsProduct">
+<s:complexContent mixed="false">
+<s:extension base="tns:clsBaseEntities">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="ProductIdenfity" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="ProductName" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="Picture" type="s:base64Binary"/>
+<s:element minOccurs="1" maxOccurs="1" name="Price" type="s:double"/>
+<s:element minOccurs="1" maxOccurs="1" name="MaxPrice" nillable="true" type="s:double"/>
+<s:element minOccurs="1" maxOccurs="1" name="CardType" type="tns:CardType"/>
+<s:element minOccurs="0" maxOccurs="1" name="DetailsLink" type="s:string"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="clsProvider">
+<s:complexContent mixed="false">
+<s:extension base="tns:clsBaseEntities">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="Icon" type="s:base64Binary"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="clsCardsBL">
+<s:complexContent mixed="false">
+<s:extension base="tns:clsCards"/>
+</s:complexContent>
+</s:complexType>
+<s:element name="GetSellerProviders">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="query" type="tns:GetSellerProvidersQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="GetSellerProvidersQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceRequest">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="Language" type="tns:Language"/>
+<s:element minOccurs="1" maxOccurs="1" name="ForMainPage" type="s:boolean"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:element name="GetSellerProvidersResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="GetSellerProvidersResult" type="tns:GetSellerProvidersResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="GetSellerProvidersResponse">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="Providers" type="tns:ArrayOfSellerProvider"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="ArrayOfSellerProvider">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="unbounded" name="SellerProvider" nillable="true" type="tns:SellerProvider"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="SellerProvider">
+<s:complexContent mixed="false">
+<s:extension base="tns:SellerProviderCacheKey">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="Icon" type="s:base64Binary"/>
+<s:element minOccurs="1" maxOccurs="1" name="CategoryId" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="CategoryName" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="MaxPayment" type="s:int"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="SellerProviderCacheKey">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderID" type="s:int"/>
+</s:sequence>
+</s:complexType>
+<s:element name="GetProducts">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="query" type="tns:GetProductsQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="GetProductsQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceRequest">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderID" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="CardType" type="tns:CardType"/>
+<s:element minOccurs="1" maxOccurs="1" name="Language" type="tns:Language"/>
+<s:element minOccurs="1" maxOccurs="1" name="LoadPictures" type="s:boolean"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:element name="GetProductsResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="GetProductsResult" type="tns:GetProductsResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="GetProductsResponse">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="Products" type="tns:ArrayOfClsProduct"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="ArrayOfClsProduct">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="unbounded" name="clsProduct" nillable="true" type="tns:clsProduct"/>
+</s:sequence>
+</s:complexType>
+<s:element name="GetReport">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="reportQuery" type="tns:BaseWebServiceReportQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="GetReportResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="GetReportResult" type="tns:ReportResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="ReportResponse">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="DtReport">
+<s:complexType>
+<s:sequence>
+<s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax"/>
+<s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+</s:sequence>
+</s:complexType>
+<s:element name="GetObligo">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="obligoQuery" type="tns:ObligoQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="ObligoQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseWebServiceRequest">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:element name="GetObligoResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="GetObligoResult" type="tns:ObligoResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="ObligoResponse">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="Frame" type="s:double"/>
+<s:element minOccurs="1" maxOccurs="1" name="TemporaryFrame" type="s:double"/>
+<s:element minOccurs="1" maxOccurs="1" name="Balance" type="s:double"/>
+<s:element minOccurs="1" maxOccurs="1" name="Loadbalance" type="s:double"/>
+<s:element minOccurs="1" maxOccurs="1" name="UseEarningPoints" type="s:boolean"/>
+<s:element minOccurs="1" maxOccurs="1" name="PointsBalance" type="s:int"/>
+</s:sequence>
+</s:complexType>
+<s:element name="MunicipalityGetCities">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="query" type="tns:MunicipalityGetCitiesQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="MunicipalityGetCitiesQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseQuery">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="Transaction" type="tns:clsTransactions"/>
+<s:element minOccurs="1" maxOccurs="1" name="User" type="tns:UserType"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="BaseQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseRequest">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="Language" type="tns:Language"/>
+<s:element minOccurs="1" maxOccurs="1" name="UserID" type="s:int"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:complexType name="clsTransactions">
+<s:complexContent mixed="false">
+<s:extension base="tns:clsBaseEntities">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="IdenfityAction" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="SellerId" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderId" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderProductId" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="CellularNumber" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="Payment" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="ProfitPrecentage" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="PaymentForSellerWithVAT" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="PaymentForAdminWithVAT" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="PaymentForSellerWithoutVAT" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="PaymentForAdminWithoutVAT" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="VATPrecentage" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime"/>
+<s:element minOccurs="1" maxOccurs="1" name="ProviderAction" type="tns:ProviderAction"/>
+<s:element minOccurs="1" maxOccurs="1" name="Status" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="AdminBalance" type="s:float"/>
+<s:element minOccurs="0" maxOccurs="1" name="Details" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="CardNumber" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="CardCode" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="FinalFeeSum" type="s:float"/>
+<s:element minOccurs="1" maxOccurs="1" name="PurchasePrice" type="s:double"/>
+<s:element minOccurs="0" maxOccurs="1" name="SellerIP" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="Branch" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="User" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="AgentId" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="AgentName" type="s:string"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:simpleType name="ProviderAction">
+<s:restriction base="s:string">
+<s:enumeration value="None"/>
+<s:enumeration value="Check"/>
+<s:enumeration value="Load"/>
+<s:enumeration value="Manual"/>
+<s:enumeration value="Cancel"/>
+<s:enumeration value="Overdraft"/>
+<s:enumeration value="LoadOfSeller"/>
+<s:enumeration value="CancelOfSeller"/>
+<s:enumeration value="PayDebt"/>
+<s:enumeration value="GetDebt"/>
+<s:enumeration value="GetDetails"/>
+<s:enumeration value="LoadIEC"/>
+<s:enumeration value="IECActionConfirmation"/>
+<s:enumeration value="IECRetrievingDetails"/>
+<s:enumeration value="IECPaymentCancellation"/>
+<s:enumeration value="IECGetDebtForPay"/>
+<s:enumeration value="IECGetCreditDetails"/>
+<s:enumeration value="PendingApprovalLocalPayment"/>
+<s:enumeration value="ConfirmedLocalPayment"/>
+<s:enumeration value="CancelledLocalPayment"/>
+<s:enumeration value="AbortTransaction"/>
+<s:enumeration value="AbortReloading"/>
+</s:restriction>
+</s:simpleType>
+<s:element name="MunicipalityGetCitiesResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="MunicipalityGetCitiesResult" type="tns:MunicipalityGetCitiesResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="MunicipalityGetCitiesResponse">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="Cities" type="tns:ArrayOfCity"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="ArrayOfCity">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="unbounded" name="City" nillable="true" type="tns:City"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="City">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string"/>
+</s:sequence>
+</s:complexType>
+<s:element name="MunicipalityGetPayTypes">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="city" type="s:int"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="MunicipalityGetPayTypesResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="MunicipalityGetPayTypesResult" type="tns:GetMunicipalityPayTypesServiceResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="GetMunicipalityPayTypesServiceResponse">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="MunicipalityTypes" type="tns:ArrayOfMunicipalityPaymentType"/>
+<s:element minOccurs="0" maxOccurs="1" name="TransactionId" type="s:string"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="ArrayOfMunicipalityPaymentType">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="unbounded" name="MunicipalityPaymentType" nillable="true" type="tns:MunicipalityPaymentType"/>
+</s:sequence>
+</s:complexType>
+<s:complexType name="MunicipalityPaymentType">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="CityCategoryId" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+</s:sequence>
+</s:complexType>
+<s:element name="GetMunicipalityDebt">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="query" type="tns:GetMuniDebtQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="GetMuniDebtQuery">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="SellerId" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="Language" type="tns:Language"/>
+<s:element minOccurs="0" maxOccurs="1" name="ConnectionOrDeviceID" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="PaymentID" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="FormNumber" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="AccountNumber" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double"/>
+<s:element minOccurs="0" maxOccurs="1" name="CellNumber" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="User" type="tns:UserType"/>
+<s:element minOccurs="1" maxOccurs="1" name="SiteID" type="tns:MunicipalPaymentsSites"/>
+<s:element minOccurs="1" maxOccurs="1" name="CityId" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="CityCategoryId" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="TransactionId" type="s:int"/>
+</s:sequence>
+</s:complexType>
+<s:simpleType name="MunicipalPaymentsSites">
+<s:restriction base="s:string">
+<s:enumeration value="None"/>
+<s:enumeration value="CityPay"/>
+<s:enumeration value="Pay24"/>
+<s:enumeration value="MyBills"/>
+<s:enumeration value="Hagihon"/>
+<s:enumeration value="PayBill"/>
+</s:restriction>
+</s:simpleType>
+<s:element name="GetMunicipalityDebtResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="GetMunicipalityDebtResult" type="tns:ServiceMunicipalityGetDebtResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="ServiceMunicipalityGetDebtResponse">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="Sum" type="s:double"/>
+<s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:Status"/>
+<s:element minOccurs="0" maxOccurs="1" name="Details" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="Message" type="tns:Messages"/>
+<s:element minOccurs="0" maxOccurs="1" name="SiteMessage" type="s:string"/>
+<s:element minOccurs="1" maxOccurs="1" name="TransactionId" type="s:int"/>
+</s:sequence>
+</s:complexType>
+<s:simpleType name="Messages">
+<s:restriction base="s:string">
+<s:enumeration value="SiteMessage"/>
+<s:enumeration value="Success"/>
+<s:enumeration value="SuccessWithError"/>
+<s:enumeration value="NotLogin"/>
+<s:enumeration value="NoBillPayment"/>
+<s:enumeration value="PaymentFail"/>
+<s:enumeration value="InvalidAmount"/>
+<s:enumeration value="InvoicePaied"/>
+</s:restriction>
+</s:simpleType>
+<s:element name="MunicipalityPayment">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="query" type="tns:GetMuniDebtQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="MunicipalityPaymentResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="MunicipalityPaymentResult" type="tns:ServiceMunicipalityPaymentResponse"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="ServiceMunicipalityPaymentResponse">
+<s:complexContent mixed="false">
+<s:extension base="tns:ServiceMunicipalityGetDebtResponse">
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="ConfirmationNumber" type="s:string"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:element name="GetTransactionForCancel">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="query" type="tns:GetTransactionForCancelQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="GetTransactionForCancelQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseQuery">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="ProductId" type="s:int"/>
+<s:element minOccurs="0" maxOccurs="1" name="CellularNumber" type="s:string"/>
+<s:element minOccurs="0" maxOccurs="1" name="TerminalNum" type="s:string"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:element name="GetTransactionForCancelResponse">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="GetTransactionForCancelResult">
+<s:complexType>
+<s:sequence>
+<s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax"/>
+<s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element name="CancelLoad">
+<s:complexType>
+<s:sequence>
+<s:element minOccurs="0" maxOccurs="1" name="query" type="tns:CancelLoadQuery"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:complexType name="CancelLoadQuery">
+<s:complexContent mixed="false">
+<s:extension base="tns:BaseQuery">
+<s:sequence>
+<s:element minOccurs="1" maxOccurs="1" name="ProductId" type="s:int"/>
+<s:element minOccurs="1" maxOccurs="1" name="SumToCancel" type="s:float"/>
+<s:element minOccurs="0" maxOccurs="1" name="RowForCancel">
+<s:complexType>
+<s:sequence>
+<s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax"/>
+<s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax"/>
+</s:sequence>
+</s:complexType>
+</s:element>
+<s:element minOccurs="1" maxOccurs="1" name="CancelInPeletalk" type="s:boolean"/>
+</s:sequence>
+</s:extension>
+</s:complexContent>
+</s:complexType>
+<s:element name="CancelLoadResponse">
+<s:complexType/>
+</s:element>
+</s:schema>
+</wsdl:types>
+<wsdl:message name="LoadSoapIn">
+<wsdl:part name="parameters" element="tns:Load"/>
+</wsdl:message>
+<wsdl:message name="LoadSoapOut">
+<wsdl:part name="parameters" element="tns:LoadResponse"/>
+</wsdl:message>
+<wsdl:message name="GetSellerProvidersSoapIn">
+<wsdl:part name="parameters" element="tns:GetSellerProviders"/>
+</wsdl:message>
+<wsdl:message name="GetSellerProvidersSoapOut">
+<wsdl:part name="parameters" element="tns:GetSellerProvidersResponse"/>
+</wsdl:message>
+<wsdl:message name="GetProductsSoapIn">
+<wsdl:part name="parameters" element="tns:GetProducts"/>
+</wsdl:message>
+<wsdl:message name="GetProductsSoapOut">
+<wsdl:part name="parameters" element="tns:GetProductsResponse"/>
+</wsdl:message>
+<wsdl:message name="GetReportSoapIn">
+<wsdl:part name="parameters" element="tns:GetReport"/>
+</wsdl:message>
+<wsdl:message name="GetReportSoapOut">
+<wsdl:part name="parameters" element="tns:GetReportResponse"/>
+</wsdl:message>
+<wsdl:message name="GetObligoSoapIn">
+<wsdl:part name="parameters" element="tns:GetObligo"/>
+</wsdl:message>
+<wsdl:message name="GetObligoSoapOut">
+<wsdl:part name="parameters" element="tns:GetObligoResponse"/>
+</wsdl:message>
+<wsdl:message name="MunicipalityGetCitiesSoapIn">
+<wsdl:part name="parameters" element="tns:MunicipalityGetCities"/>
+</wsdl:message>
+<wsdl:message name="MunicipalityGetCitiesSoapOut">
+<wsdl:part name="parameters" element="tns:MunicipalityGetCitiesResponse"/>
+</wsdl:message>
+<wsdl:message name="MunicipalityGetPayTypesSoapIn">
+<wsdl:part name="parameters" element="tns:MunicipalityGetPayTypes"/>
+</wsdl:message>
+<wsdl:message name="MunicipalityGetPayTypesSoapOut">
+<wsdl:part name="parameters" element="tns:MunicipalityGetPayTypesResponse"/>
+</wsdl:message>
+<wsdl:message name="GetMunicipalityDebtSoapIn">
+<wsdl:part name="parameters" element="tns:GetMunicipalityDebt"/>
+</wsdl:message>
+<wsdl:message name="GetMunicipalityDebtSoapOut">
+<wsdl:part name="parameters" element="tns:GetMunicipalityDebtResponse"/>
+</wsdl:message>
+<wsdl:message name="MunicipalityPaymentSoapIn">
+<wsdl:part name="parameters" element="tns:MunicipalityPayment"/>
+</wsdl:message>
+<wsdl:message name="MunicipalityPaymentSoapOut">
+<wsdl:part name="parameters" element="tns:MunicipalityPaymentResponse"/>
+</wsdl:message>
+<wsdl:message name="GetTransactionForCancelSoapIn">
+<wsdl:part name="parameters" element="tns:GetTransactionForCancel"/>
+</wsdl:message>
+<wsdl:message name="GetTransactionForCancelSoapOut">
+<wsdl:part name="parameters" element="tns:GetTransactionForCancelResponse"/>
+</wsdl:message>
+<wsdl:message name="CancelLoadSoapIn">
+<wsdl:part name="parameters" element="tns:CancelLoad"/>
+</wsdl:message>
+<wsdl:message name="CancelLoadSoapOut">
+<wsdl:part name="parameters" element="tns:CancelLoadResponse"/>
+</wsdl:message>
+<wsdl:portType name="ServicePeleTalkSoap">
+<wsdl:operation name="Load">
+<wsdl:input message="tns:LoadSoapIn"/>
+<wsdl:output message="tns:LoadSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="GetSellerProviders">
+<wsdl:input message="tns:GetSellerProvidersSoapIn"/>
+<wsdl:output message="tns:GetSellerProvidersSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="GetProducts">
+<wsdl:input message="tns:GetProductsSoapIn"/>
+<wsdl:output message="tns:GetProductsSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="GetReport">
+<wsdl:input message="tns:GetReportSoapIn"/>
+<wsdl:output message="tns:GetReportSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="GetObligo">
+<wsdl:input message="tns:GetObligoSoapIn"/>
+<wsdl:output message="tns:GetObligoSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityGetCities">
+<wsdl:input message="tns:MunicipalityGetCitiesSoapIn"/>
+<wsdl:output message="tns:MunicipalityGetCitiesSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityGetPayTypes">
+<wsdl:input message="tns:MunicipalityGetPayTypesSoapIn"/>
+<wsdl:output message="tns:MunicipalityGetPayTypesSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="GetMunicipalityDebt">
+<wsdl:input message="tns:GetMunicipalityDebtSoapIn"/>
+<wsdl:output message="tns:GetMunicipalityDebtSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityPayment">
+<wsdl:input message="tns:MunicipalityPaymentSoapIn"/>
+<wsdl:output message="tns:MunicipalityPaymentSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="GetTransactionForCancel">
+<wsdl:input message="tns:GetTransactionForCancelSoapIn"/>
+<wsdl:output message="tns:GetTransactionForCancelSoapOut"/>
+</wsdl:operation>
+<wsdl:operation name="CancelLoad">
+<wsdl:input message="tns:CancelLoadSoapIn"/>
+<wsdl:output message="tns:CancelLoadSoapOut"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="ServicePeleTalkSoap" type="tns:ServicePeleTalkSoap">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="Load">
+<soap:operation soapAction="http://peletop.co.il/Load" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetSellerProviders">
+<soap:operation soapAction="http://peletop.co.il/GetSellerProviders" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetProducts">
+<soap:operation soapAction="http://peletop.co.il/GetProducts" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetReport">
+<soap:operation soapAction="http://peletop.co.il/GetReport" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetObligo">
+<soap:operation soapAction="http://peletop.co.il/GetObligo" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityGetCities">
+<soap:operation soapAction="http://peletop.co.il/MunicipalityGetCities" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityGetPayTypes">
+<soap:operation soapAction="http://peletop.co.il/MunicipalityGetPayTypes" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetMunicipalityDebt">
+<soap:operation soapAction="http://peletop.co.il/GetMunicipalityDebt" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityPayment">
+<soap:operation soapAction="http://peletop.co.il/MunicipalityPayment" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetTransactionForCancel">
+<soap:operation soapAction="http://peletop.co.il/GetTransactionForCancel" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CancelLoad">
+<soap:operation soapAction="http://peletop.co.il/CancelLoad" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:binding name="ServicePeleTalkSoap12" type="tns:ServicePeleTalkSoap">
+<soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="Load">
+<soap12:operation soapAction="http://peletop.co.il/Load" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetSellerProviders">
+<soap12:operation soapAction="http://peletop.co.il/GetSellerProviders" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetProducts">
+<soap12:operation soapAction="http://peletop.co.il/GetProducts" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetReport">
+<soap12:operation soapAction="http://peletop.co.il/GetReport" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetObligo">
+<soap12:operation soapAction="http://peletop.co.il/GetObligo" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityGetCities">
+<soap12:operation soapAction="http://peletop.co.il/MunicipalityGetCities" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityGetPayTypes">
+<soap12:operation soapAction="http://peletop.co.il/MunicipalityGetPayTypes" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetMunicipalityDebt">
+<soap12:operation soapAction="http://peletop.co.il/GetMunicipalityDebt" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MunicipalityPayment">
+<soap12:operation soapAction="http://peletop.co.il/MunicipalityPayment" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetTransactionForCancel">
+<soap12:operation soapAction="http://peletop.co.il/GetTransactionForCancel" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CancelLoad">
+<soap12:operation soapAction="http://peletop.co.il/CancelLoad" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="ServicePeleTalk">
+<wsdl:port name="ServicePeleTalkSoap" binding="tns:ServicePeleTalkSoap">
+<soap:address location="http://localhost:3030/peletok/"/>
+</wsdl:port>
+<wsdl:port name="ServicePeleTalkSoap12" binding="tns:ServicePeleTalkSoap12">
+<soap12:address location="http://localhost:3030/peletok/"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
