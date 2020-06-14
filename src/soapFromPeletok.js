@@ -1,6 +1,10 @@
 const soap = require('soap');
 const express = require('express');
+const axios = require('axios');
+
 const app = express();
+const peletokTestServerURL = 'http://vpnj.ravtech.co.il:8080/api/v1/';
+const testDetailsPath = 'payment/payment/94';
 /**
  * this is remote service defined in this file, that can be accessed by clients, who will supply args
  * response is returned to the calling client
@@ -9,10 +13,29 @@ const app = express();
 const service = {
   ServicePeleTalk: {
     ServicePeleTalkSoap: {
+      GetReport(args) {
+        console.log('GetReport args, ', data);
+        return { data: 'GetReport success' };
+      },
       Load(args) {
-        console.log('args, ', args);
+        // console.log('Load args, ', args);
+        let data = {
+          apiName: 'node_api_soap',
+          // data: args,
+          username: 'peletok0',
+          password: 'pass0',
+          itemId: args.loadQuery.Load.ProviderID
+        }
+        console.log(args.loadQuery.Load.ProviderID);
         
-        return { data: 'success' };
+        axios.post(`${peletokTestServerURL}${testDetailsPath}`, data).then( res => {
+          console.log(res.data);
+        }).catch( err => {
+          if (err && err.response && err.response.data) {
+            console.log(err.response.data.error);
+        }
+        });
+        return { data: 'Load success' };
       }
     }
   }
@@ -20,7 +43,7 @@ const service = {
 // xml data is extracted from wsdl file created
 const xml = require('fs').readFileSync('./peletokTest.wsdl', 'utf8');
 //create an express server and pass it to a soap server
-const server = app.listen(3030, function() {
+const server = app.listen(3030, function () {
   const host = '127.0.0.1';
   const port = server.address().port;
 });
