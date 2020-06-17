@@ -4,7 +4,8 @@ const axios = require('axios');
 
 const app = express();
 const peletokTestServerURL = 'http://vpnj.ravtech.co.il:8080/api/v1/';
-const testDetailsPath = 'payment/payment/94';
+const testPaymentPath = 'payment/payment/94';
+const testGetDetails = 'user/user_details/?peletok0/?pass0';
 /**
  * this is remote service defined in this file, that can be accessed by clients, who will supply args
  * response is returned to the calling client
@@ -14,28 +15,36 @@ const service = {
   ServicePeleTalk: {
     ServicePeleTalkSoap: {
       GetReport(args) {
-        console.log('GetReport args, ', data);
+        console.log('GetReport args, ', args);
         return { data: 'GetReport success' };
       },
       Load(args) {
-        // console.log('Load args, ', args);
         let data = {
           apiName: 'node_api_soap',
-          // data: args,
           username: 'peletok0',
           password: 'pass0',
-          itemId: args.loadQuery.Load.ProviderID
+          itemId: args.loadQuery.Load.ProductID
         }
-        console.log(args.loadQuery.Load.ProviderID);
-        
-        axios.post(`${peletokTestServerURL}${testDetailsPath}`, data).then( res => {
-          console.log(res.data);
-        }).catch( err => {
+        console.log('data, ', data);
+        axios.post(`${peletokTestServerURL}${testPaymentPath}`, data).then( res => {
+          console.log('res, ', res.data);
+        }).catch(err => {
           if (err && err.response && err.response.data) {
-            console.log(err.response.data.error);
-        }
+            console.log('err.response.data.error, ', err.response.data.error);
+          }
         });
         return { data: 'Load success' };
+      },
+      async GetObligo(args) {
+        console.log('GetObligo args, ', args);
+        await axios.get(`${peletokTestServerURL}${testGetDetails}`).then( res => {
+          console.log('res, ', res.data);
+        }).catch(err => {
+          if (err && err.response && err.response.data) {
+            console.log(err.response.data.error);
+          }
+        });
+        return { data: 'GetObligo success' };
       }
     }
   }
