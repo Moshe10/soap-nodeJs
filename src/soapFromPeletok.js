@@ -3,14 +3,24 @@ const express = require('express');
 const axios = require('axios');
 
 const app = express();
+
+const { postLoad } = require('./poster');
+const { getObligo } = require('./getter');
+const {
+  Manual,
+  Virtual,
+  Frame,
+  TemporaryFrame,
+  Balance
+} = require('./strings');
 const peletokTestServerURL = 'http://vpnj.ravtech.co.il:8080/api/v1/';
-const testPaymentPath = 'payment/payment/94';
 const testGetDetails = 'user/user_details/?peletok0/?pass0';
 /**
  * this is remote service defined in this file, that can be accessed by clients, who will supply args
  * response is returned to the calling client
  * our service calculates bmi by dividing weight in kilograms by square of height in metres
  */
+
 const service = {
   ServicePeleTalk: {
     ServicePeleTalkSoap: {
@@ -18,33 +28,47 @@ const service = {
         console.log('GetReport args, ', args);
         return { data: 'GetReport success' };
       },
-      Load(args) {
-        let data = {
-          apiName: 'node_api_soap',
-          username: 'peletok0',
-          password: 'pass0',
-          itemId: args.loadQuery.Load.ProductID
+      async Load(args) {
+        let resObj;
+        if (args.loadQuery.Load.CardType == Manual) {
+          let data = {
+            itemId: args.loadQuery.Load.ProductID,
+            providerID: args.loadQuery.Load.ProviderID
+          }
+          await postLoad(data).then(res => {
+            resObj = {
+              IsSucceeded: true,
+              TransactionID: res.currentTransaction,
+            }
+          });
+          return resObj;
         }
-        console.log('data, ', data);
-        axios.post(`${peletokTestServerURL}${testPaymentPath}`, data).then( res => {
-          console.log('res, ', res.data);
-        }).catch(err => {
-          if (err && err.response && err.response.data) {
-            console.log('err.response.data.error, ', err.response.data.error);
+        else if (args.loadQuery.Load.CardType == Virtual) {
+          let data = {
+            contractNumber: args.loadQuery.Load.CellularNumber,
+            itemId: args.loadQuery.Load.ProductID,
+            phoneNumber: args.loadQuery.Load.CellularNumber,
+            providerID: args.loadQuery.Load.ProviderID
           }
-        });
-        return { data: 'Load success' };
+          await postLoad(data).then(res => {
+            resObj = {
+              IsSucceeded: true,
+              TransactionID: res.currentTransaction,
+            };
+          });
+          return resObj;
+        }
       },
-      async GetObligo(args) {
-        console.log('GetObligo args, ', args);
-        await axios.get(`${peletokTestServerURL}${testGetDetails}`).then( res => {
-          console.log('res, ', res.data);
-        }).catch(err => {
-          if (err && err.response && err.response.data) {
-            console.log(err.response.data.error);
+      async GetObligo() {
+        let resObj;
+        await getObligo().then(res => {
+          resObj = {
+            Frame: res.balance.filter(item => item.strRepr == Frame),
+            TemporaryFrame: res.balance.filter(item => item.strRepr == TemporaryFrame),
+            Balance: res.balance.filter(item => item.strRepr == Balance)
           }
         });
-        return { data: 'GetObligo success' };
+        return resObj;
       }
     }
   }
