@@ -1,11 +1,14 @@
 const soap = require('soap');
 const express = require('express');
-const axios = require('axios');
 
 const app = express();
 
 const { postLoad } = require('./poster');
-const { getObligo } = require('./getter');
+const {
+  getObligo,
+  getSellerProviders,
+  getProductsByProvider
+} = require('./getter');
 const {
   Manual,
   Virtual,
@@ -13,8 +16,9 @@ const {
   TemporaryFrame,
   Balance
 } = require('./strings');
-const peletokTestServerURL = 'http://vpnj.ravtech.co.il:8080/api/v1/';
-const testGetDetails = 'user/user_details/?peletok0/?pass0';
+const { sellerProviderArr } = require('./functions/getSellerFunction');
+const { productArr } = require('./functions/getProductsFunction');
+
 /**
  * this is remote service defined in this file, that can be accessed by clients, who will supply args
  * response is returned to the calling client
@@ -67,6 +71,20 @@ const service = {
             TemporaryFrame: res.balance.filter(item => item.strRepr == TemporaryFrame),
             Balance: res.balance.filter(item => item.strRepr == Balance)
           }
+        });
+        return resObj;
+      },
+      async GetSellerProviders() {
+        let resObj;
+        await getSellerProviders().then(res => {
+          resObj = sellerProviderArr(res);
+        });
+        return resObj;
+      },
+      async GetProducts(args) {
+        let resObj;
+        await getProductsByProvider(args.query.ProviderID).then( res => {
+          resObj = productArr(res, args.query.CardType);
         });
         return resObj;
       }

@@ -22,6 +22,16 @@ function getObligo() {
     return dataGetter('/user/user_details/');
 }
 
+function getSellerProviders() {
+    return dataGetter('/supplier?filter=true/');
+}
+
+function getProductsByProvider(providerId) {
+    return dataGetter(`/product/products/${providerId}?filter=true/`);
+}
+
 module.exports = {
-    getObligo: getObligo
+    getObligo: getObligo,
+    getSellerProviders: getSellerProviders,
+    getProductsByProvider: getProductsByProvider
 }
