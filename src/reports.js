@@ -1,0 +1,8 @@
+
+class Report {
+    constructor() {
+        super();
+    }
+
+
+}

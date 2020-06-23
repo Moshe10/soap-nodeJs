@@ -7,7 +7,8 @@ const { postLoad } = require('./poster');
 const {
   getObligo,
   getSellerProviders,
-  getProductsByProvider
+  getProductsByProvider,
+  getReportBase
 } = require('./getter');
 const {
   Manual,
@@ -28,8 +29,12 @@ const { productArr } = require('./functions/getProductsFunction');
 const service = {
   ServicePeleTalk: {
     ServicePeleTalkSoap: {
-      GetReport(args) {
+      async GetReport(args) {
         console.log('GetReport args, ', args);
+        await getReportBase(args.ActionsReportBaseQuery).then(res => {
+          console.log('res, ', res);
+
+        });
         return { data: 'GetReport success' };
       },
       async Load(args) {
@@ -83,7 +88,7 @@ const service = {
       },
       async GetProducts(args) {
         let resObj;
-        await getProductsByProvider(args.query.ProviderID).then( res => {
+        await getProductsByProvider(args.query.ProviderID).then(res => {
           resObj = productArr(res, args.query.CardType);
         });
         return resObj;

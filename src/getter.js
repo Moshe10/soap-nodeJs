@@ -18,6 +18,16 @@ function dataGetter(url) {
     });
 }
 
+function appendParams(params) {
+    return Object.keys(params).reduce((n, k) => `${n}${n == '?' ? '' : '&'}${k + '=' + params[k]}`, '?');
+}
+
+/*
+ * ########################################
+ *       ONLY WRITE BELLOW THIS LINE       
+ * ########################################
+ */
+
 function getObligo() {
     return dataGetter('/user/user_details/');
 }
@@ -30,8 +40,21 @@ function getProductsByProvider(providerId) {
     return dataGetter(`/product/products/${providerId}?filter=true/`);
 }
 
+function getReportBase(paramObj) {
+    // &phoneNumber=0551465465&startDate=2020-06-01&startDateTime=00:00&endDate=2020-06-23&endDateTime=23:59&supplier_id=94
+    console.log('getReportBase()...');
+    let params = {
+        DateStart: paramObj.DateStart,
+        DateEnd: paramObj.DateEnd,
+        PhoneNumber: paramObj.PhoneNumber,
+        ProviderID: paramObj.ProviderID,
+    }
+    return dataGetter(`/report/report_data/0/${appendParams(params)}/`);
+}
+
 module.exports = {
     getObligo: getObligo,
     getSellerProviders: getSellerProviders,
-    getProductsByProvider: getProductsByProvider
+    getProductsByProvider: getProductsByProvider,
+    getReportBase: getReportBase
 }
