@@ -2,10 +2,16 @@ const axios = require('axios');
 
 const SERVER_BASE = 'http://vpnj.ravtech.co.il:8080/api/v1';
 
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+    const data = 'peletok0:pass0';
+    config.headers.Authorization = data;
+    return config;
+});
 
 function dataGetter(url) {
     return new Promise(function (resolve, reject) {
-        axios.get(SERVER_BASE + url + '?peletok0/?pass0').then(
+        axios.get(SERVER_BASE + url).then(
             function (response) {
                 resolve(response.data);
             }
@@ -29,27 +35,25 @@ function appendParams(params) {
  */
 
 function getObligo() {
-    return dataGetter('/user/user_details/');
+    return dataGetter('/user/user_details');
 }
 
 function getSellerProviders() {
-    return dataGetter('/supplier?filter=true/');
+    return dataGetter('/supplier?filter=true');
 }
 
 function getProductsByProvider(providerId) {
-    return dataGetter(`/product/products/${providerId}?filter=true/`);
+    return dataGetter(`/product/products/${providerId}?filter=true`);
 }
 
 function getReportBase(paramObj) {
-    // &phoneNumber=0551465465&startDate=2020-06-01&startDateTime=00:00&endDate=2020-06-23&endDateTime=23:59&supplier_id=94
-    console.log('getReportBase()...');
     let params = {
-        DateStart: paramObj.DateStart,
-        DateEnd: paramObj.DateEnd,
-        PhoneNumber: paramObj.PhoneNumber,
-        ProviderID: paramObj.ProviderID,
+        startDate: paramObj.DateStart,
+        endDate: paramObj.DateEnd,
+        phoneNumber: paramObj.PhoneNumber !== null ? paramObj.PhoneNumber : '',
+        supplier_id: paramObj.ProviderID,
     }
-    return dataGetter(`/report/report_data/0/${appendParams(params)}/`);
+    return dataGetter(`/report/report_data/0/${appendParams(params)}`);
 }
 
 module.exports = {

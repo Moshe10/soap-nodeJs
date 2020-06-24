@@ -19,6 +19,7 @@ const {
 } = require('./strings');
 const { sellerProviderArr } = require('./functions/getSellerFunction');
 const { productArr } = require('./functions/getProductsFunction');
+const Report = require('./reports');
 
 /**
  * this is remote service defined in this file, that can be accessed by clients, who will supply args
@@ -30,11 +31,8 @@ const service = {
   ServicePeleTalk: {
     ServicePeleTalkSoap: {
       async GetReport(args) {
-        console.log('GetReport args, ', args);
-        await getReportBase(args.ActionsReportBaseQuery).then(res => {
-          console.log('res, ', res);
-
-        });
+        let reports = new Report(args);
+        reports.reportSwitch();
         return { data: 'GetReport success' };
       },
       async Load(args) {

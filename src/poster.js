@@ -2,10 +2,14 @@ const axios = require('axios');
 
 const SERVER_BASE = 'http://vpnj.ravtech.co.il:8080/api/v1';
 
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+    const data = 'peletok0:pass0';
+    config.headers.Authorization = data;
+    return config;
+});
 
 function dataPoster(url, sentData = {}) {
-    sentData.username = 'peletok0';
-    sentData.password = 'pass0';
     return new Promise(function (resolve, reject) {
         axios.post(SERVER_BASE + url, sentData).then(
             function (response) {
