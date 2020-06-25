@@ -46,19 +46,13 @@ function getProductsByProvider(providerId) {
     return dataGetter(`/product/products/${providerId}?filter=true`);
 }
 
-function getReportBase(paramObj) {
-    let params = {
-        startDate: paramObj.DateStart,
-        endDate: paramObj.DateEnd,
-        phoneNumber: paramObj.PhoneNumber !== null ? paramObj.PhoneNumber : '',
-        supplier_id: paramObj.ProviderID,
-    }
-    return dataGetter(`/report/report_data/0/${appendParams(params)}`);
+function getReport(params, type) {
+    return dataGetter(`/report/report_data/${type}/${appendParams(params)}`);
 }
 
 module.exports = {
     getObligo: getObligo,
     getSellerProviders: getSellerProviders,
     getProductsByProvider: getProductsByProvider,
-    getReportBase: getReportBase
+    getReport: getReport
 }

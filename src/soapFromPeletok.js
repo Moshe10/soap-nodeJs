@@ -32,8 +32,7 @@ const service = {
     ServicePeleTalkSoap: {
       async GetReport(args) {
         let reports = new Report(args);
-        reports.reportSwitch();
-        return { data: 'GetReport success' };
+        return reports.reportSwitch();
       },
       async Load(args) {
         let resObj;
