@@ -29,6 +29,10 @@ function postLoad(data) {
     return dataPoster('/payment/payment/' + data.providerID, data);
 }
 
+function postMunicipalityDept(data) {
+    return dataPoster('', data);
+}
+
 module.exports = {
     postLoad: postLoad
 }

@@ -8,7 +8,7 @@ const {
   getObligo,
   getSellerProviders,
   getProductsByProvider,
-  getReportBase
+  getMunicipality
 } = require('./getter');
 const {
   Manual,
@@ -19,6 +19,7 @@ const {
 } = require('./strings');
 const { sellerProviderArr } = require('./functions/getSellerFunction');
 const { productArr } = require('./functions/getProductsFunction');
+const { getMunicipalityFilter, getMunicipalityPayTypeFilter } = require('./functions/getMunicipalityFunction');
 const Report = require('./reports');
 
 /**
@@ -89,6 +90,26 @@ const service = {
           resObj = productArr(res, args.query.CardType);
         });
         return resObj;
+      },
+      async MunicipalityGetCities() {
+        let resObj;
+        await getMunicipality().then(res => {
+          resObj = getMunicipalityFilter(res);
+        });
+        return resObj;
+      },
+      async MunicipalityGetPayTypes(args) {
+        let resObj;
+        await getMunicipality().then(res => {
+          resObj = getMunicipalityPayTypeFilter(res, args);
+        });
+        return resObj;
+      },
+      async GetMunicipalityDebt(args) {
+        let resObj;
+        console.log(args);
+        
+
       }
     }
   }

@@ -50,9 +50,14 @@ function getReport(params, type) {
     return dataGetter(`/report/report_data/${type}/${appendParams(params)}`);
 }
 
+function getMunicipality() {
+    return dataGetter('/city_pay');
+}
+
 module.exports = {
     getObligo: getObligo,
     getSellerProviders: getSellerProviders,
     getProductsByProvider: getProductsByProvider,
-    getReport: getReport
+    getReport: getReport,
+    getMunicipality: getMunicipality
 }
